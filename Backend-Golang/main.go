@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"log"
 	"net/http"
@@ -31,8 +32,14 @@ func pingPong(w http.ResponseWriter, r *http.Request) {
 func getQuestions(w http.ResponseWriter, r *http.Request) {
 	questions := []Question{
 		{"Tallest building in South Asia", "1wfags-qsbe-asfg-3d4t", false, "Raj"},
-		{"Tallest building in South Asia", "1wfags-qsbe-asfg-3d4t", true, "Kamal"},
+		{"Tallest building in India", "1wfags-qsbe-asfg-3dst", true, "Kamal"},
 	}
-	w.Header().Add("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(questions)
+
+	if r.Header.Get("Content-Type") == "application/xml" {
+		w.Header().Add("Content-Type", "application/xml")
+		xml.NewEncoder(w).Encode(questions)
+	} else {
+		w.Header().Add("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(questions)
+	}
 }
