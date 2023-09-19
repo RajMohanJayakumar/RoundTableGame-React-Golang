@@ -6,6 +6,8 @@ import (
 	"encoding/xml"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func pingPong(w http.ResponseWriter, r *http.Request) {
@@ -25,4 +27,9 @@ func getQuestions(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(questions)
 	}
+}
+
+func getScore(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	fmt.Fprint(w, vars["user_id"])
 }
